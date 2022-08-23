@@ -12,6 +12,7 @@ function MapLoader(){
         onUnmount={map => {
           // do your stuff before map is unmounted
         }}
+        
         />
       
     );
