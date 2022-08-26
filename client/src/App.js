@@ -8,7 +8,9 @@ function App() {
     <Routes>
       <Route  exact path="/" element={<TestComponent />} />
       <Route  path="/map" element={<MapLoader />} />
+      
     </Routes>
+    
   );
 }
 
