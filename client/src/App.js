@@ -5,12 +5,7 @@ import MapLoader from "./components/Map/MapLoader";
 
 function App() {
   return (
-    <Routes>
-      <Route  exact path="/" element={<TestComponent />} />
-      <Route  path="/map" element={<MapLoader />} />
-      
-    </Routes>
-    
+    <LoginLogic/>
   );
 }
 
