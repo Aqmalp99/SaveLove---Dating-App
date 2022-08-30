@@ -6,6 +6,7 @@ import HomePage from "./components/Home/HomePage";
 
 function App() {
   return (
+
     <>
     <nav>
       <ul> 
@@ -21,12 +22,13 @@ function App() {
       </ul>
     </nav>
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<LoginLogic />} />
       <Route path="/test " element={<TestComponent />} />
       <Route path="/map" element={<MapLoader />} />
       
     </Routes>
     </>
+
   );
 }
 
