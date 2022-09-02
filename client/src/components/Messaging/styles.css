@@ -1,0 +1,48 @@
+.col {
+    border: 10px solid red;
+}
+
+.MessagingPage {
+    height: 91.7%;
+    display: grid;
+    grid-template-columns: repeat(5, 2fr);
+    grid-template-rows: repeat(10, 1fr);
+}
+
+.inbox {
+    text-align: center;
+    border: 1px solid black;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 11;
+}
+
+.chat-history {
+    text-align: center;
+    border: 1px solid black;
+    grid-column-start: 2;
+    grid-column-end: 6;
+    grid-row-start: 1;
+    grid-row-end: 10;
+}
+
+.message-input {
+    text-align: center;
+    border: 1px solid black;
+    grid-column-start: 2;
+    grid-column-end: 6;
+    grid-row-start: 10;
+    grid-row-end: 11;
+}
+
+p {
+    margin-bottom: 0.3rem;
+}
+
+input {
+    border-radius: 25px;
+    border: 0.5px solid black;
+    width: 80%;
+    padding: 0.5%;
+}
