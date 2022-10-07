@@ -1,9 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
+
 
 const MessageInput = () => {
+    const [message, setMessage] = useState("");
+
     return (
         <>
-            <p>Message Input</p>
             <input></input>
         </>
     )
