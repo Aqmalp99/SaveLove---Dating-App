@@ -47,6 +47,10 @@
     border-bottom-right-radius: 25px;
 }
 
+.break {
+    flex-basis: 100%;
+}
+
 .message-sent {
     display: flex;
     width: 100%;
@@ -93,4 +97,12 @@ input {
     background-color: rgb(244, 172, 183) !important;
     border: none !important;
     border-radius: 25px !important;
+}
+
+.convo {
+    border: 1px solid black;
+}
+
+.active-convo {
+    background-color: #f5acb7;
 }

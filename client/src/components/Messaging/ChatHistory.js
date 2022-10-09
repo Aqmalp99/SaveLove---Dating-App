@@ -1,13 +1,37 @@
 import React, {useEffect, useRef} from "react";
 
-const ChatHistory = ({messageReceived}) => {
+const ChatHistory = ({messages, messageReceived, id}) => {
     const historyRef = useRef(null);
 
     useEffect(() => {
         historyRef.current?.scrollIntoView(false);
     }, []);
 
-    if (messageReceived === ""){
+    const renderedMessages = messages.map((el, index) => {
+        if (el.sender === id){
+            return (
+                <div key={index} className="message-sent">
+                    <div className="left-block"></div>
+                    <div className="msg">
+                        {el.message}
+                    </div>
+                    
+                </div>
+            )
+        }
+        else {
+            return (
+            <>
+                <div key={index} className="message-recv">
+                    {el.message}
+                </div>
+                {/* <div key={index} className="break"></div> */}
+            </>
+            )
+        }
+    });
+
+    if (messages.length === 0){
         return (
             <>
                 <div ref={historyRef} className="chat-history-container">
@@ -20,33 +44,7 @@ const ChatHistory = ({messageReceived}) => {
     return (
     <>
         <div ref={historyRef} className="chat-history-container">
-            <div className="message-recv">
-                {messageReceived}
-            </div>
-            {/* <div className="message-recv">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </div>
-            <div className="message-sent">
-                <div className="left-block"></div>
-                <div className="msg">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </div>
-            </div>
-            <div className="message-sent">
-                <div className="left-block"></div>
-                <div className="msg">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </div>
-            </div> 
-            <div className="message-sent">
-                <div className="left-block"></div>
-                <div className="msg">
-                    Lorem ipsum
-                </div>
-            </div>
-            <div className="message-recv">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </div> */}
+            {renderedMessages}
         </div>
     </>
     )
