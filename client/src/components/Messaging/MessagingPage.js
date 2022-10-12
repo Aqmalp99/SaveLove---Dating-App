@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import ChatHistory from './ChatHistory';
-import MessageInput from './MessageInput';
+// import MessageInput from './MessageInput';
 import Inbox from './Inbox';
 import "./styles.css";
 import Button from 'react-bootstrap/Button';
@@ -93,7 +93,7 @@ const MessagingPage = () => {
                 <Inbox conversations={conversations} active={activeConversation} switchConvo={switchConvo}/>
             </div>
             <div className="chat-history">
-                <ChatHistory messages={messages} messageReceived={messageReceived} id={id}/>
+                <ChatHistory messages={messages} id={id}/>
             </div>
             <div className="message-input">
                 <input value={message} onChange={(event) => {setMessage(event.target.value);}}></input>
