@@ -6,6 +6,10 @@ import "./styles.css";
 import Button from 'react-bootstrap/Button';
 import io from "socket.io-client";
 import axios from 'axios';
+import Modal from 'react-bootstrap/Modal';
+import { ModalBody } from "react-bootstrap";
+import { CalendarHeart } from 'react-bootstrap-icons';
+import moment from 'moment';
 
 //randomly generated id to mimic a client
 //this would usually be session storage
@@ -25,6 +29,7 @@ const MessagingPage = () => {
     const [messages, setMessages] = useState([]);
     const [conversations, setConversations] = useState([]);
     const [activeConversation, setActiveConversation] = useState(0);
+    const [displayModal, setDisplayModal]= useState(false);
 
     const sendMessage = () => {
         let messageData = {
@@ -87,6 +92,10 @@ const MessagingPage = () => {
         setActiveConversation(index);
     }
 
+    const openModal = () => {
+        setDisplayModal(!displayModal);
+    };
+
     return (
         <div className="MessagingPage">
             <div className="inbox">
@@ -96,9 +105,23 @@ const MessagingPage = () => {
                 <ChatHistory messages={messages} id={id}/>
             </div>
             <div className="message-input">
+                <button onClick = {openModal}className='date-button'><span><CalendarHeart size={30}/></span></button>
                 <input value={message} onChange={(event) => {setMessage(event.target.value);}}></input>
                 <Button onClick={sendMessage} className="send-btn" variant="primary">Send</Button>
             </div>
+            {console.log(moment().toISOString())}
+            <Modal show={displayModal} onHide={openModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Setup a Date!</Modal.Title>
+                </Modal.Header>
+                <ModalBody>
+                    <form >
+                        <label for="datetime"> Date & Time </label>
+                        
+                        <input id="datetime" type="datetime-local" value={(new Date().toISOString()).slice(0,-8)} min={(new Date().toISOString()).slice(0,-8)} ></input>
+                    </form>
+                </ModalBody>
+            </Modal>
         </div>
     );
 }
