@@ -2,16 +2,16 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/matches/:id', async (req, res) => {
-    const query = `SELECT matches.match_id, users.first_name, users.surname 
-                   FROM matches 
-                   INNER JOIN users 
-                   ON matches.person2 = users.user_id 
+    const query = `SELECT match.match_id, customer.first_name, customer.surname 
+                   FROM match 
+                   INNER JOIN customer 
+                   ON match.person2 = customer.user_id 
                    WHERE person1=$1 
                    UNION 
-                   SELECT matches.match_id, users.first_name, users.surname 
-                   FROM matches 
-                   INNER JOIN users 
-                   ON matches.person1 = users.user_id 
+                   SELECT match.match_id, customer.first_name, customer.surname 
+                   FROM match 
+                   INNER JOIN customer 
+                   ON match.person1 = customer.user_id 
                    WHERE person2=$1;`;
     await req.pool.connect((err, client, release) => {
         if (err){
@@ -29,7 +29,7 @@ router.get('/matches/:id', async (req, res) => {
 });
 
 router.get('/messages/:id', async (req, res) => {
-    const query = `SELECT * FROM messages WHERE match_id = $1 ORDER BY date_message ASC;`;
+    const query = `SELECT * FROM message WHERE match_id = $1 ORDER BY date_message ASC;`;
     await req.pool.connect((err, client, release) => {
         if (err){
             return console.error('Error acquiring client', err.stack);

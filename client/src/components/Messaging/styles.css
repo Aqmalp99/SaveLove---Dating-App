@@ -106,3 +106,10 @@ input {
 .active-convo {
     background-color: #f5acb7;
 }
+
+.date-button {
+    padding: 2%;
+    border: none;
+    background: none;
+
+}

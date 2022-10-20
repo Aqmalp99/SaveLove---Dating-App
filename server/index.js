@@ -38,9 +38,9 @@ io.on("connection", async (socket) => {
   console.log(`User connected: ${socket.id}`);
 
   const userID = socket.handshake.query.id;
-  const query = `SELECT match_id FROM matches WHERE person1 = $1 
+  const query = `SELECT match_id FROM match WHERE person1 = $1 
                  UNION 
-                 SELECT match_id FROM matches WHERE person2 = $1;`;
+                 SELECT match_id FROM match WHERE person2 = $1;`;
 
   const { rows } = await dbPool.query(query, [userID])
   
@@ -59,9 +59,9 @@ io.on("connection", async (socket) => {
 
   socket.on("send_message", async (data) => {
     console.log(data);
-    // const insertQuery = `INSERT INTO messages (match_id, sender, message, date_message) 
-    //                      VALUES ($1, $2, $3, NOW())`;
-    // await dbPool.query(insertQuery, [data.messageData.convoID, data.messageData.sender, data.messageData.message]);
+    const insertQuery = `INSERT INTO message (match_id, sender, message, date_message) 
+                         VALUES ($1, $2, $3, NOW())`;
+    await dbPool.query(insertQuery, [data.messageData.convoID, data.messageData.sender, data.messageData.message]);
     socket.to(String(data.messageData.convoID)).emit("receive_message", data)
   })
 });
