@@ -4,6 +4,7 @@ import ChatHistory from './ChatHistory';
 import Inbox from './Inbox';
 import "./styles.css";
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import io from "socket.io-client";
 import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
@@ -93,8 +94,36 @@ const MessagingPage = () => {
     }
 
     const openModal = () => {
+        setDatePicked((new Date().toISOString()).slice(0,-8));
         setDisplayModal(!displayModal);
     };
+    
+    const onDateChange =(e) => {
+        setDatePicked(e.target.value);
+    }
+
+    const confirmDate = (e) => {
+        e.preventDefault();
+        
+        const submitDate = async () => {
+            const body = {matchID: conversations[activeConversation].match_id,
+                          date: moment(datePicked).format("YYYY-MM-DD"),
+                          time: moment(datePicked).format("HH:mm")}
+           const success = await axios
+            .post(`/confirm-date/`, body)
+            .then((response) =>{
+                return true;
+            })
+            .catch((err) => {
+                console.log(err)
+                return false;
+            })
+            console.log(success);
+            }
+        
+        submitDate();
+        
+    }
 
     return (
         <div className="MessagingPage">
@@ -115,11 +144,13 @@ const MessagingPage = () => {
                     <Modal.Title>Setup a Date!</Modal.Title>
                 </Modal.Header>
                 <ModalBody>
-                    <form >
-                        <label for="datetime"> Date & Time </label>
-                        
-                        <input id="datetime" type="datetime-local" value={(new Date().toISOString()).slice(0,-8)} min={(new Date().toISOString()).slice(0,-8)} ></input>
-                    </form>
+                    <Form onSubmit={confirmDate}>
+                        <Form.Group> 
+                            <Form.Label> Date & Time </Form.Label>
+                            <Form.Control  type="datetime-local" value={datePicked} onChange={onDateChange} min={(new Date().toISOString()).slice(0,-8)} ></Form.Control >
+                        </Form.Group>
+                        <Button  variant="primary" type="submit">Send</Button>
+                    </Form>
                 </ModalBody>
             </Modal>
         </div>
