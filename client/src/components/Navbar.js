@@ -45,6 +45,16 @@ function Navbar(){
                                 Message
                             </Link>
                         </li>
+                        <li className='nav-item'>
+                            <Link to='/view-dates' className='nav-links' onClick={closeMobileMenu}>
+                                My Dates
+                            </Link>
+                        </li>
+                        <li className='nav-item'>
+                            <Link to='/test-positive' className='nav-links' onClick={closeMobileMenu}>
+                                Tested Positive
+                            </Link>
+                        </li>
                         <li>
                             <Link to='/sign-up' className='nav-links-mobile' onClick={closeMobileMenu} >
                                 Sign Up

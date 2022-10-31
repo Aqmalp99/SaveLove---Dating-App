@@ -6,6 +6,9 @@ const {Server} = require("socket.io");
 require("dotenv").config();
 const dbPool = require('./dbShae/dbShae');
 const messagingRouter = require("./routes/messagingRouter");
+const covidRouter= require("./routes/covidRouter");
+const emailRouter = require("./routes/emailRouter")
+const userRouter = require("./routes/userRouter");
 
 const PORT = process.env.PORT || 3001;
 
@@ -29,6 +32,9 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "../client/build")));
 
 app.use('/messaging', messagingRouter);
+app.use('/covid', covidRouter);
+app.use('/user', userRouter);
+app.use('/', emailRouter);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
