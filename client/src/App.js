@@ -10,6 +10,10 @@ import Footer from './components/Footer';
 import MapPage from './components/Pages/MapPage';
 import MyDates from './components/MyDates/MyDates';
 import TestedPositive from './components/TestedPositive/TestedPositive';
+import Login from './components/Pages/Login';
+import Signup from './components/Pages/Signup';
+import Register from './components/Pages/Register';
+
 
 function App() {
   return (
@@ -20,6 +24,9 @@ function App() {
         <Routes>
 
           <Route path='/' element={<Home/>}></Route>
+          <Route path='/login' element={<Login/>}></Route>
+          <Route path='/signup' element={<Signup/>}></Route>
+          <Route path='/register' element={<Register/>}></Route>
           <Route path='/chat' element={<MessagingPage />}/>
           <Route path='/map' element={<MapPage/>} />
           <Route path='/view-dates' element={<MyDates/>} />

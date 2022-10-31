@@ -1,24 +1,87 @@
 import React, { useState } from "react";
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { useCookies } from 'react-cookie'
+
 import './Signup.css';
 
+
 function SignupForm() {
+    const [email, setEmail] = useState(null)
+    const [password, setPassword] = useState(null)
+    const [confirmPassword, setConfirmPassword] = useState(null)
+    const [error, setError] = useState(null)
+    const [cookies, setCookie, removeCookie] = useCookies(null)
+
+    let navigate = useNavigate()
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        try {
+            if (password !== confirmPassword) {
+                setError('Passwords need to match!')
+                return
+            }
+
+            const response = await axios.post(`http://localhost:3002/auth/signup`, { email, password, confirmPassword })
+
+            setCookie('UserId', response.data.user_id)
+            setCookie('AuthToken', response.data.token)
+
+            const success = response.status === 200
+            // if (success)  navigate ('/register') 
+            if (success) {
+                console.log("Sign up successfully!")
+                navigate ('/register')
+            }
+
+            window.location.reload()
+
+        } catch (error) {
+            setError(error.response.data)
+            console.log(error.response.data)
+        }
+
+    }
+
+
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <div className="form-inner">
-                <h1>Sign up</h1>
+                <h1>Create account</h1>
                 <div className="form-group">
                     <label htmlFor="email">Email:</label>
-                    <input type="email" name="email" id="email"/>
+                    <input 
+                        type="email"
+                        name="email"
+                        id="email"
+                        required={true}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password:</label>
-                    <input type="password" name="password" id="password"/>
+                    <input 
+                        type="password"
+                        name="password"
+                        id="password"
+                        required={true}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="confirm-password">Confirm password:</label>
-                    <input type="password" name="confirm-password" id="confirm-password"/>
+                    <label htmlFor="confirmPassword">Confirm password:</label>
+                    <input 
+                        type="password" 
+                        name="confirmPassword" 
+                        id="confirmPassword"
+                        required={true}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
                 </div>
-                <input type="submit" value="Signup"/>
+                <p>{error}</p>
+                <input type="submit" value="SUBMIT"/>
             </div>
         </form>
     )

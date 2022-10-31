@@ -9,6 +9,7 @@ const messagingRouter = require("./routes/messagingRouter");
 const covidRouter= require("./routes/covidRouter");
 const emailRouter = require("./routes/emailRouter")
 const userRouter = require("./routes/userRouter");
+const signupSignInRouter = require("./routes/signupSigninRouter");
 
 const PORT = process.env.PORT || 3001;
 
@@ -35,42 +36,45 @@ app.use('/messaging', messagingRouter);
 app.use('/covid', covidRouter);
 app.use('/user', userRouter);
 app.use('/', emailRouter);
+app.use('/auth', signupSignInRouter);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
 
-io.on("connection", async (socket) => {
-  console.log(`User connected: ${socket.id}`);
 
-  const userID = socket.handshake.query.id;
-  const query = `SELECT match_id FROM match WHERE person1 = $1 
-                 UNION 
-                 SELECT match_id FROM match WHERE person2 = $1;`;
+// io.on("connection", async (socket) => {
+//   console.log(`User connected: ${socket.id}`);
 
-  const { rows } = await dbPool.query(query, [userID])
+//   const userID = socket.handshake.query.id;
+//   const query = `SELECT match_id FROM match WHERE person1 = $1 
+//                  UNION 
+//                  SELECT match_id FROM match WHERE person2 = $1;`;
+
+//   const { rows } = await dbPool.query(query, [userID])
   
-  console.log(`user ID is ${userID}`);
+//   console.log(`user ID is ${userID}`);
   
 
-  const matches = rows.map((element) => {
-    return String(element.match_id);
-  })
+//   const matches = rows.map((element) => {
+//     return String(element.match_id);
+//   })
 
-  console.log(matches);
+//   console.log(matches);
 
-  await socket.join(matches);
+//   await socket.join(matches);
 
-  console.log(socket.rooms);
+//   console.log(socket.rooms);
 
-  socket.on("send_message", async (data) => {
-    console.log(data);
-    const insertQuery = `INSERT INTO message (match_id, sender, message, date_message) 
-                         VALUES ($1, $2, $3, NOW())`;
-    await dbPool.query(insertQuery, [data.messageData.convoID, data.messageData.sender, data.messageData.message]);
-    socket.to(String(data.messageData.convoID)).emit("receive_message", data)
-  })
-});
+//   socket.on("send_message", async (data) => {
+//     console.log(data);
+//     const insertQuery = `INSERT INTO message (match_id, sender, message, date_message) 
+//                          VALUES ($1, $2, $3, NOW())`;
+//     await dbPool.query(insertQuery, [data.messageData.convoID, data.messageData.sender, data.messageData.message]);
+//     socket.to(String(data.messageData.convoID)).emit("receive_message", data)
+//   })
+// });
+
 
 server.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);

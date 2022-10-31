@@ -1,32 +1,71 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import './Login.css';
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { useCookies } from 'react-cookie'
 
-function LoginForm({Login, error}) {
-    const [details, setDetails] = useState({name: "", email: "", password: ""})
+function LoginForm() {
+    const [email, setEmail] = useState(null)
+    const [password, setPassword] = useState(null)
+    const [error, setError] = useState(null)
+    const [cookies, setCookie, removeCookie] = useCookies(null)
 
-    const submitHandler = e => {
-        e.preventDefault();
+    let navigate = useNavigate()
 
-        Login(details)
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        try {
+            const response = await axios.post(`http://localhost:3002/auth/login`, { email, password })
+
+            setCookie('UserId', response.data.user_id)
+            setCookie('AuthToken', response.data.token)
+
+            const success = response.status === 200
+            if (success) navigate ('/dashboard') 
+
+
+            window.location.reload()
+
+        } catch (error) {
+            setError(error.response.data)
+            console.log(error.response.data)
+        }
+
     }
 
     return (
-        <form onSubmit={submitHandler}>
-            <div className="form-inner">
-                <h1>Login</h1>
-                {(error != "") ? (<div className="error">Wrong password</div>): ""}
-                <div className="form-group">
-                    <label htmlFor="email">Email:</label>
-                    <input type="email" name="email" id="email" onChange={e => setDetails({...details, email: e.target.value})} value={details.email}/>
+        <Fragment>
+            <form onSubmit={handleSubmit}>
+                <div className="form-inner">
+                    <h1>Log in</h1>
+                    <div className="form-group">
+                        <label htmlFor="email">Email:</label>
+                        <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            required={true}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="password">Password:</label>
+                        <input 
+                            type="password"
+                            name="password"
+                            id="password"
+                            required={true}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </div>
+                    <p>{error}</p>
+                    <input type="submit" value="SUBMIT"/>
                 </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password:</label>
-                    <input type="password" name="password" id="password" onChange={e => setDetails({...details, password: e.target.value})} value={details.password}/>
-                </div>
-                <input type="submit" value="LOGIN"/>
-            </div>
-        </form>
+            </form>
+        </Fragment>
     )
 }
+
 
 export default LoginForm
