@@ -1,8 +1,9 @@
 //https://www.npmjs.com/package/@react-google-maps/api
-import React, { useEffect, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { GoogleMap, useJsApiLoader, Marker, LoadScript, places,StandaloneSearchBox } from '@react-google-maps/api';
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import { useGeolocated } from "react-geolocated";
+import DisplayRestaurants from './DisplayRestaurants';
 
 
 const containerStyle = {
@@ -12,16 +13,17 @@ const containerStyle = {
 var markerCluster;
 var markers= [];
 
-function MapComponent() {
+function MapComponent({changeSearch}) {
 
   
   const [map, setMap] = React.useState(null);
   const [center,setCenter] = useState({lat:0, lng:1});
+  const [restaurantDetails, setRestaurantDetails] = useState([]);
+  const classRef = useRef(null);
   
-  const onUnmount = React.useCallback(function callback(map) {
-    setMap(null)
-  }, [])
+ 
   
+
     const { coords, isGeolocationAvailable, isGeolocationEnabled } =
             useGeolocated({
                 positionOptions: {
@@ -64,14 +66,10 @@ function MapComponent() {
       radius: 5000,
       type: ['restaurant']
     }
-    // console.log(service);
-    // service.forEach((result) => {
-    //   console.log(result);
-    // })
-    service.nearbySearch(request,callback);
-
+    
     setCenter(results[0].geometry.location);
-    // console.log(results[0].geometry.location)
+    service.nearbySearch(request,callback);
+    
     
   };
   
@@ -79,9 +77,9 @@ function MapComponent() {
     if (status === window.google.maps.places.PlacesServiceStatus.OK) {
       // setMarkers([]);
       var tempArray=[];
+      var tempRestaurants=[];
       results.forEach((result)=> {
         tempArray.push(result.geometry.location);
-        
       });
       console.log(markers);
       if(markers.length >0){
@@ -89,6 +87,22 @@ function MapComponent() {
         
         markerCluster.removeMarkers(markers);
       }
+      const google = window.google;
+      var service = new google.maps.places.PlacesService(map);
+      let placesInfo = [];
+      let fields = ['name', 'formatted_address', 'formatted_phone_number', 'rating', 'user_ratings_total', 'reviews', 'photo', 'place_id', 'geometry'];
+      results.map( place => {
+         service.getDetails({placeId: place.place_id, fields}, function(placeInfo, status) {
+          if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+
+            // Add New Place
+              placesInfo.push(placeInfo);
+              changeSearch(placeInfo);
+          }
+        })
+      })
+      
+      
       markers= [];
       tempArray.forEach((location) => {
         markers.push(
@@ -98,25 +112,21 @@ function MapComponent() {
           })
         )
       });
-      console.log(markers);
-      
       markerCluster =new MarkerClusterer({ markers, map });
-      
-      
-      
+   
     }
   }
-
+  
     
    
   return (isGeolocationAvailable) ?  (
+    <>
     <LoadScript id="script-loader" googleMapsApiKey="AIzaSyAAnHKToKQ9imzJRKXzFVU8optXACQsr8M" libraries={["places"]}>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
         zoom={6}
         onLoad={onLoad}
-        onUnmount={onUnmount}
       >
         {/* {markers.map((mark,index) => <Marker key={index} position={mark} />)}
         {console.log(markers)} */}
@@ -149,7 +159,8 @@ function MapComponent() {
         <></>
       </GoogleMap>
       </LoadScript>
-  ) : <></>
+      </>) : <></>
+  
 }
 
 

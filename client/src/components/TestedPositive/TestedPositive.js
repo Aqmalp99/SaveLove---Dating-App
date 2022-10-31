@@ -18,13 +18,25 @@ const TestedPositive = () => {
 
     const onPositiveCase = (e)=> {
         e.preventDefault();
-
+        const emails=[];
         const submitCovidCase = async () => {
-            const body = {date: moment(date).format("YYYY-MM-DD")}
+            const body = {date: moment(date).format("YYYY-MM-DD"), emails :[]}
             await axios
             .post(`/covid/tested-positive`, body)
-            .then((response) => {
-                setSubmitted(true);
+            .then( async (response) => {
+                response.data.map((email)=> {
+                    body.emails.push(email.email);
+                })
+
+
+                
+                await axios 
+                .post ('/send', body)
+                .then((response) => setSubmitted(true))
+                .catch((err) => {
+                    console.log(err);
+                })
+                
             })
             .catch((err) => {
                 console.log(err);
@@ -32,6 +44,8 @@ const TestedPositive = () => {
         }
         
         submitCovidCase();
+
+
 
     }
 
