@@ -1,6 +1,7 @@
 import React from 'react';
 import './Button.css';
 import { Link } from 'react-router-dom';
+import {useCookies} from "react-cookie"
 
 const STYLES = ['btn--primary', 'btn--outline', 'btn--test'];
 
@@ -14,8 +15,14 @@ export const Button = ({
     onClick,
     buttonStyle,
     buttonSize,
-    link
+    link,
+    isLogin,
+    setLogin
 }) => {
+
+  const [cookies, setCookie, removeCookie] = useCookies(['user'])
+  const authToken = cookies.AuthToken
+
   const checkButtonStyle = STYLES.includes(buttonStyle)
     ? buttonStyle
     : STYLES[0];
@@ -24,11 +31,22 @@ export const Button = ({
 
   const checkLink = LINKS.includes(link) ? link : LINKS[0];
 
+  const onClick_Logout = () => {
+    if (authToken) {
+        removeCookie('UserId', cookies.UserId)
+        removeCookie('AuthToken', cookies.AuthToken)
+        window.location.reload()
+        return
+    }
+
+    setLogin(false)
+}
+
   return (
       <Link to={`${checkLink}`} className='btn-mobile'>
         <button
           className={`btn ${checkButtonStyle} ${checkButtonSize}`}
-          onClick={onClick}
+          onClick={isLogin? onClick_Logout : onClick}
           type={type}
         >
           {children}

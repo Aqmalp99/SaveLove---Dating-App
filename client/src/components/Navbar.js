@@ -4,13 +4,13 @@ import './Navbar.css';
 import { Button } from './Button';
 
 
-function Navbar(){
+function Navbar({authToken, isLogIn, setLogin}){
     const [click, setClick] =useState(false);
-    const [button, setButton]=useState(true);
+    const [button, setButton]=useState(true);  
 
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);  
-    
+
     const showButton = () => {
         if(window.innerWidth <= 960) {
             setButton(false);
@@ -56,7 +56,7 @@ function Navbar(){
                             </Link>
                         </li>
                     </ul>    
-                    {button && <Button buttonStyle='btn--outline' link='login'>LOG IN</Button>}               
+                    {button && <Button buttonStyle='btn--outline' link={isLogIn? 'logout' : 'login'}>{isLogIn? 'LOG OUT' : 'LOG IN'}</Button>}               
                 </div>
             </nav>
         </>

@@ -9,6 +9,7 @@ function LoginForm() {
     const [password, setPassword] = useState(null)
     const [error, setError] = useState(null)
     const [cookies, setCookie, removeCookie] = useCookies(null)
+    const [isLogin, setLogin] = useState(false)
 
     let navigate = useNavigate()
 
@@ -16,12 +17,13 @@ function LoginForm() {
         e.preventDefault()
 
         try {
-            const response = await axios.post(`http://localhost:3002/auth/login`, { email, password })
+            const response = await axios.post(`http://localhost:3001/auth/login`, { email, password })
 
             setCookie('UserId', response.data.user_id)
             setCookie('AuthToken', response.data.token)
 
             const success = response.status === 200
+            setLogin(true)
             if (success) navigate ('/dashboard') 
 
 

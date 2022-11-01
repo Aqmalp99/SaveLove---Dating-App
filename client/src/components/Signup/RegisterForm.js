@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import './Register.css';
 
+
 function RegisterForm() {
 
     const [cookies, setCookie, removeCookie] = useCookies(null)
@@ -26,7 +27,7 @@ function RegisterForm() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try { 
-            const response = await axios.put('http://localhost:3002/auth/register', {formData})
+            const response = await axios.put('http://localhost:3001/auth/register', {formData})
             
             const success = response.status === 200
 
@@ -103,30 +104,30 @@ function RegisterForm() {
                                             id="man_gender"
                                             type="radio"
                                             name="gender"
-                                            value="man"
+                                            value="Man"
                                             required={true}
                                             onChange={handleChange}
-                                            checked={formData.gender === "man"}
+                                            checked={formData.gender === "Man"}
                                         />
                                         <label htmlFor="man_gender">Man</label>
                                         <input
                                             id="woman_gender"
                                             type="radio"
                                             name="gender"
-                                            value="woman"
+                                            value="Woman"
                                             required={true}
                                             onChange={handleChange}
-                                            checked={formData.gender === "woman"}
+                                            checked={formData.gender === "Woman"}
                                         />
                                         <label htmlFor="woman_gender">Woman</label>
                                         <input
                                             id="lgbt_gender"
                                             type="radio"
                                             name="gender"
-                                            value="lgbt"
+                                            value="LGBT"
                                             required={true}
                                             onChange={handleChange}
-                                            checked={formData.gender === "lgbt"}
+                                            checked={formData.gender === "LGBT"}
                                         />
                                         <label htmlFor="lgbt_gender">LGBT+</label>
                                 </div>
@@ -139,30 +140,30 @@ function RegisterForm() {
                                             id="int_gender_man"
                                             type="radio"
                                             name="int_gender"
-                                            value="man"
+                                            value="Man"
                                             required={true}
                                             onChange={handleChange}
-                                            checked={formData.int_gender === "man"}
+                                            checked={formData.int_gender === "Man"}
                                         />
                                         <label htmlFor="int_gender_man">Man</label>
                                         <input
                                             id="int_gender_woman"
                                             type="radio"
                                             name="int_gender"
-                                            value="woman"
+                                            value="Woman"
                                             required={true}
                                             onChange={handleChange}
-                                            checked={formData.int_gender === "woman"}
+                                            checked={formData.int_gender === "Woman"}
                                         />
                                         <label htmlFor="int_gender_woman">Woman</label>
                                         <input
                                             id="int_gender_lgbt"
                                             type="radio"
                                             name="int_gender"
-                                            value="lgbt"
+                                            value="LGBT"
                                             required={true}
                                             onChange={handleChange}
-                                            checked={formData.int_gender === "lgbt"}
+                                            checked={formData.int_gender === "LGBT"}
                                         />
                                         <label htmlFor="int_gender_lgbt">LGBT+</label>
                                 </div>
@@ -188,9 +189,9 @@ function RegisterForm() {
                                             type="radio"
                                             name="vaxx_status"
                                             required={true}
-                                            value="vaccinated"
+                                            value="Vaccinated"
                                             onChange={handleChange}
-                                            checked={formData.vaxx_status === "vaccinated"}
+                                            checked={formData.vaxx_status === "Vaccinated"}
                                         />
                                         <label htmlFor="vaccinated">Vaccinated</label>
                                         <input
@@ -198,9 +199,9 @@ function RegisterForm() {
                                             type="radio"
                                             name="vaxx_status"
                                             required={true}
-                                            value="unvaccinated"
+                                            value="Unvaccinated"
                                             onChange={handleChange}
-                                            checked={formData.vaxx_status === "unvaccinated"}
+                                            checked={formData.vaxx_status === "Unvaccinated"}
                                         />
                                         <label htmlFor="unvaccinated">Unvaccinated</label>
                                 </div>
@@ -214,9 +215,9 @@ function RegisterForm() {
                                             type="radio"
                                             name="int_vaxx_status"
                                             required={true}
-                                            value="vaccinated"
+                                            value="Vaccinated"
                                             onChange={handleChange}
-                                            checked={formData.int_vaxx_status === "vaccinated"}
+                                            checked={formData.int_vaxx_status === "Vaccinated"}
                                         />
                                         <label htmlFor="vaccinated_interested">Vaccinated</label>
                                         <input
@@ -224,9 +225,9 @@ function RegisterForm() {
                                             type="radio"
                                             name="int_vaxx_status"
                                             required={true}
-                                            value="unvaccinated"
+                                            value="Unvaccinated"
                                             onChange={handleChange}
-                                            checked={formData.int_vaxx_status === "unvaccinated"}
+                                            checked={formData.int_vaxx_status === "Unvaccinated"}
                                         />
                                         <label htmlFor="unvaccinated_interested">Unvaccinated</label>
                                         <input
@@ -234,9 +235,9 @@ function RegisterForm() {
                                             type="radio"
                                             name="int_vaxx_status"
                                             required={true}
-                                            value="any"
+                                            value="Any"
                                             onChange={handleChange}
-                                            checked={formData.int_vaxx_status === "any"}
+                                            checked={formData.int_vaxx_status === "Any"}
                                         />
                                         <label htmlFor="any_status_interested">Any</label>
                                 </div>

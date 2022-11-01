@@ -12,7 +12,7 @@ function HeroSection() {
   return (
     <div className='hero-container'>
       <video src={require('.//videos/background.mp4')}autoPlay loop muted />
-      
+
       <h3>LOVE AWAITS</h3>
       <p>What are you waiting for?</p>
       <div className='hero-btns'>
@@ -21,6 +21,8 @@ function HeroSection() {
           buttonStyle='btn--outline'
           buttonSize='btn--large'
           link='/signup'
+          isLogin={isLogin}
+          setLogin={setLogin}
         >
           SIGN UP
         </Button>

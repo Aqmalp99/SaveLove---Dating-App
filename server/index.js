@@ -10,6 +10,7 @@ const covidRouter= require("./routes/covidRouter");
 const emailRouter = require("./routes/emailRouter")
 const userRouter = require("./routes/userRouter");
 const signupSignInRouter = require("./routes/signupSigninRouter");
+const matchingRouter = require("./routes/matchingRouter");
 
 const PORT = process.env.PORT || 3001;
 
@@ -25,7 +26,7 @@ app.use((req,res,next) => {
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT"],
   },
 });
 
@@ -37,6 +38,7 @@ app.use('/covid', covidRouter);
 app.use('/user', userRouter);
 app.use('/', emailRouter);
 app.use('/auth', signupSignInRouter);
+app.use('/dashboard', matchingRouter);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
