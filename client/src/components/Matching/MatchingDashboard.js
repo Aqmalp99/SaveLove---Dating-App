@@ -105,17 +105,6 @@ const MatchingDashboard = () => {
     if (!Array.isArray(targetUsers)) {
         return <MatchingDashboardInner targetUsers={tempDB} user={user} user_id={userId} getUser={getUser} />
     }
-    
-    // if(user.likes != null) {
-    //     const LikedUserIds = user?.likes.concat(userId)
-    //     const filteredTargetUsers = targetUsers?.filter(targetUser => !LikedUserIds?.includes(targetUser.user_id))
-    //     setTargetUsers(filteredTargetUsers)
-    // }
-        // console.log(userId)
-        // console.log(filteredTargetUsers)
-
-    // const LikedUserIds = user.likes.concat(userId)
-    // const filteredTargetUsers = targetUsers?.filter(targetUser => !LikedUserIds.includes(targetUser.user_id))
 
     return <MatchingDashboardInner targetUsers={targetUsers} user={user} user_id={userId} getUser={getUser} />
 }
@@ -208,23 +197,6 @@ const MatchingDashboardInner = ({ targetUsers, user, user_id, getUser }) => {
         }
     }
 
-    // const removeLike = async (removed_user_id) => {
-    //     try {
-    //         const response = await axios.put('http://localhost:3001/dashboard/removelike', {
-    //             user_id,
-    //             removed_user_id
-    //         })
-    //         const success = response.status === 200
-
-    //         if (success) {
-    //             console.log(response)
-    //             getUser()
-    //         }
-
-    //     } catch (err) {
-    //         console.log(err)
-    //     }
-    // }
     
     const currentIndexRef = useRef(currentIndex)
   
