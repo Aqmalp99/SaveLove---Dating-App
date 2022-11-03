@@ -2,13 +2,17 @@ import React, {useState, useEffect, useRef} from 'react';
 import Table from 'react-bootstrap/Table';
 import axios from 'axios';
 import moment from 'moment';
+import {useCookies} from 'react-cookie';
 
 const MyDates = () => {
 
-    const [dates,setDates]= useState([])
+    const [dates,setDates]= useState([]);
+    const [cookies, setCookie, removeCookie] = useCookies(['user'])
+    const id=cookies.UserId;
+
     useEffect(() => {
         const getDates = async () => {
-            await axios.get(`/user/dates/1`)
+            await axios.get(`/user/dates/${id}`)
             .then((data) => {
                 setDates(data.data);
             })

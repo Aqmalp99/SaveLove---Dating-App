@@ -7,7 +7,7 @@ import DisplayRestaurants from './DisplayRestaurants';
 
 
 const containerStyle = {
-  width: '900px',
+  width: '1200px',
   height: '900px'
 };
 var markerCluster;
@@ -151,7 +151,8 @@ function MapComponent({changeSearch}) {
               textOverflow: `ellipses`,
               position: "absolute",
               left: "50%",
-              marginLeft: "-120px"
+              marginLeft: "-120px",
+              backgroundColor: "white"
             }}
           />
         </StandaloneSearchBox>
