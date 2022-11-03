@@ -13,20 +13,19 @@ import { CalendarHeart } from 'react-bootstrap-icons';
 import moment from 'moment';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
+import {useNavigate} from 'react-router-dom';
+import {useCookies} from 'react-cookie'
 //randomly generated id to mimic a client
 //this would usually be session storage
-const id = Math.floor(Math.random() * (3 - 1 + 1)) + 1;
+
 
 //initialise socket client. connect to backend
 //query object can be accessed by socket server
-const socket = io("/", {
-    query: {
-        id: id,
-    }
-});
+
 
 const MessagingPage = () => {
 
+    const navigate= useNavigate();
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [conversations, setConversations] = useState([]);
@@ -34,7 +33,14 @@ const MessagingPage = () => {
     const [displayModal, setDisplayModal]= useState(false);
     const [datePicked,setDatePicked]= useState("");
     const [dateConfirmed, setDateConfirmed] = useState({success:false,error:false});
-
+    const [cookies, setCookie, removeCookie] = useCookies(['user'])
+    const id=cookies.UserId;
+    
+    const socket = io("/", {
+        query: {
+            id: id,
+        }
+    });
     const sendMessage = () => {
         let messageData = {
             sender: id,

@@ -24,7 +24,7 @@ function SignupForm() {
                 return
             }
 
-            const response = await axios.post(`http://localhost:3001/auth/signup`, { email, password, confirmPassword })
+            const response = await axios.post(`/auth/signup`, { email, password, confirmPassword })
 
             setCookie('UserId', response.data.user_id)
             setCookie('AuthToken', response.data.token)

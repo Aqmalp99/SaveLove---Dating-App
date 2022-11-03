@@ -64,7 +64,7 @@ const MatchingDashboard = () => {
 
     const getUser = async () => {
         try {
-            const response = await axios.get('http://localhost:3001/dashboard/user', {
+            const response = await axios.get('/dashboard/user', {
                 params: {userId}
             })
             setUser(response.data)
@@ -76,7 +76,7 @@ const MatchingDashboard = () => {
 
     const getTargetUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:3001/dashboard/targetusers', {
+            const response = await axios.get('/dashboard/targetusers', {
                 params: {
                     int_gender: user?.int_gender,
                     int_vaxx_status: user?.int_vaxx_status,
@@ -117,7 +117,7 @@ const MatchingDashboardInner = ({ targetUsers, user, user_id, getUser }) => {
 
     const addLike = async (liked_user_id, swipedLikes) => {
         try {
-            const response = await axios.put('http://localhost:3001/dashboard/addlike', {
+            const response = await axios.put('/dashboard/addlike', {
                 user_id,
                 liked_user_id
             })
@@ -141,7 +141,7 @@ const MatchingDashboardInner = ({ targetUsers, user, user_id, getUser }) => {
 
     const addMatch = async (liked_user_id) => {
         try {
-            const response = await axios.post('http://localhost:3001/dashboard/addmatch', {
+            const response = await axios.post('/dashboard/addmatch', {
                 user_id,
                 liked_user_id
             })
@@ -170,7 +170,7 @@ const MatchingDashboardInner = ({ targetUsers, user, user_id, getUser }) => {
 
             if(swipedLikes.includes(user_id)) {
 
-                const response = await axios.get('http://localhost:3001/dashboard/checkmatch', {
+                const response = await axios.get('/dashboard/checkmatch', {
                     params: {
                         user_id: user_id,
                         liked_user_id: liked_user_id

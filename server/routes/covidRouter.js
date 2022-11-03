@@ -41,8 +41,8 @@ router.post('/tested-positive', async (req, res) => {
     INNER JOIN match
     ON date_confirmed.match_id = match.match_id
     INNER JOIN customer
-    ON match.person2 = customer.user_id
-    WHERE match.person1 = 1 
+    ON match.person_2 = customer.user_id
+    WHERE match.person_1 = 1 
     AND date_confirmed.date >= date ($1) - integer '14' 
     AND date_confirmed.date <= date ($1) 
     UNION
@@ -50,8 +50,8 @@ router.post('/tested-positive', async (req, res) => {
     INNER JOIN match
     ON date_confirmed.match_id = match.match_id
     INNER JOIN customer
-    ON match.person1 = customer.user_id
-    WHERE match.person2 = 1 
+    ON match.person_1 = customer.user_id
+    WHERE match.person_2 = 1 
     AND date_confirmed.date >= date ($1)  - integer '14' 
     AND date_confirmed.date <= date ($1) ;`;
     await req.pool.connect((err, client, release) => {
