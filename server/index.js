@@ -1,8 +1,7 @@
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
-const http = require("http");
-const {Server} = require("socket.io");
+const app = express();
 require("dotenv").config();
 const dbPool = require('./dbShae/dbShae');
 const messagingRouter = require("./routes/messagingRouter");
@@ -11,11 +10,18 @@ const emailRouter = require("./routes/emailRouter")
 const userRouter = require("./routes/userRouter");
 const signupSignInRouter = require("./routes/signupSigninRouter");
 const matchingRouter = require("./routes/matchingRouter");
+const server = require('http').createServer(app);
+const io = require('socket.io')(server, { transports: ["websocket", "polling"] , cors: {
+  origin: "http://localhost:3000",
+  methods: ["GET", "POST"],
+}, 
+allowEIO3: true
+});
 
 const PORT = process.env.PORT || 3001;
 
-const app = express();
-const server = http.createServer(app);
+
+
 app.use(cors());
 
 app.use((req,res,next) => {
@@ -23,12 +29,6 @@ app.use((req,res,next) => {
   next();
 });
 
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST", "PUT"],
-  },
-});
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../client/build")));
@@ -68,6 +68,9 @@ io.on("connection", async (socket) => {
   await socket.join(matches);
 
   console.log(socket.rooms);
+  socket.on('disconnect', function(){
+    console.log('A client has disconnected from the server');
+  });
 
   socket.on("send_message", async (data) => {
     console.log(data);
