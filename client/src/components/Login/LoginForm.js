@@ -17,7 +17,7 @@ function LoginForm() {
         e.preventDefault()
 
         try {
-            const response = await axios.post(`http://localhost:3001/auth/login`, { email, password })
+            const response = await axios.post(`/auth/login`, { email, password })
 
             setCookie('UserId', response.data.user_id)
             setCookie('AuthToken', response.data.token)
