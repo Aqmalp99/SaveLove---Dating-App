@@ -3,12 +3,23 @@ const router = express.Router();
 const pool = require("../dbShae/dbShae");
 const bcrypt = require("bcrypt");
 const jwtGenerator = require("../utils/jwtGenerator");
+const rateLimiter = require("express-rate-limit");
 // const validate = require("../bin/middleware/validate");
 // const authorise = require("../middleware/authorise");
 
 module.exports = router;
+//TO limit the number of request made to login an account
+const loginLimiter = rateLimiter({
+  //10 mins
+  windowMs: 10 * 60 * 1000,
+  
+  //5 requests per wndowMS
+  max: 7,
 
-router.post("/signup", async (req, res) => {
+  message: "try again later"
+})
+
+router.post("/signup", loginLimiter, async (req, res) => {
 
     // 1. destructure the req.body (name, email, password)
     const { email, password } = req.body;
@@ -44,7 +55,7 @@ router.post("/signup", async (req, res) => {
     }
 });
 
-router.put("/register", async (req, res) => {
+router.put("/register", loginLimiter, async (req, res) => {
 
   // 1. destructure the req.body
   const { user_id, first_name, surname, dob, gender, int_gender, postcode, vaxx_status, int_vaxx_status, interests, url } = req.body.formData;
@@ -65,7 +76,7 @@ router.put("/register", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", loginLimiter, async (req, res) => {
 
     // 1. destructure the req.body (email, password)
     const { email, password } = req.body;
@@ -106,5 +117,6 @@ router.post("/login", async (req, res) => {
 //       res.status(500).send("Server error");
 //     }
 // });
+
   
 module.exports = router;

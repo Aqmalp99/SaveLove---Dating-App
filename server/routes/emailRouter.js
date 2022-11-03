@@ -2,14 +2,29 @@ var express = require('express');
 // var router = express.Router();
 var nodemailer = require('nodemailer');
 const creds = require('../config/config');
+const rateLimiter = require("express-rate-limit");
+require("dotenv").config();
+
+//TO limit the number of request made to login an account
+const emailLimiter = rateLimiter({
+    //10 mins
+    windowMs: 10 * 60 * 1000,
+    
+    //5 requests per wndowMS
+    max: 5,
+  
+    message: "try again later"
+  })
 
 var transport = {
+
   host: 'smtp.gmail.com',
   auth: {
-    user: creds.USER,
-    pass: creds.PASS
+    user: process.env.email,
+    pass: process.env.email_pass
   }
 }
+
 
 var transporter = nodemailer.createTransport(transport)
 
@@ -23,7 +38,7 @@ transporter.verify((error, success) => {
 
 const emailRouter = express.Router();
 
-emailRouter.post('/send', async(req,res) => {
+emailRouter.post('/send',emailLimiter, async(req,res) => {
     try{
         var email = req.body.emails; //change this to be fetched from db by filter(emails of students who are enrolled to that class)
         var content = `You have been on a date with someone in the past 14 days who has tested positive for Covid. Please take extra precautions, and follow your local state guidlines.`;

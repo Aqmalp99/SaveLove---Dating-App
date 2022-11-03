@@ -1,7 +1,19 @@
 const express = require('express');
 const router = express.Router();
+const rateLimiter = require("express-rate-limit");
 
-router.get('/matches/:id', async (req, res) => {
+//TO limit the number of request made to login an account
+const messageLimiter = rateLimiter({
+    //10 mins
+    windowMs: 10 * 60 * 1000,
+    
+    //5 requests per wndowMS
+    max: 500,
+  
+    message: "try again later"
+  })
+
+router.get('/matches/:id',messageLimiter, async (req, res) => {
     const query = `SELECT match.match_id, customer.first_name, customer.surname 
                    FROM match 
                    INNER JOIN customer 
@@ -28,7 +40,7 @@ router.get('/matches/:id', async (req, res) => {
     })
 });
 
-router.get('/messages/:id', async (req, res) => {
+router.get('/messages/:id',messageLimiter, async (req, res) => {
     const query = `SELECT * FROM message WHERE match_id = $1 ORDER BY date_message ASC;`;
     await req.pool.connect((err, client, release) => {
         if (err){

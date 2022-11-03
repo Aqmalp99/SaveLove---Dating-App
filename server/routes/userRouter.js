@@ -1,7 +1,19 @@
 const express = require('express');
 const router = express.Router();
+const rateLimiter = require("express-rate-limit");
 
-router.get('/dates/:id', async (req, res) => {
+//TO limit the number of request made to login an account
+const viewDatesLimiter = rateLimiter({
+    //10 mins
+    windowMs: 10 * 60 * 1000,
+    
+    //5 requests per wndowMS
+    max: 15,
+  
+    message: "try again later"
+  })
+
+router.get('/dates/:id',viewDatesLimiter, async (req, res) => {
     console.log("works");
     const query = `SELECT customer.first_name, customer.surname, date_confirmed.date, date_confirmed.time FROM date_confirmed
                     INNER JOIN match
