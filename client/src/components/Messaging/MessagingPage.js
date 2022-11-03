@@ -140,7 +140,7 @@ const MessagingPage = () => {
     return (
         <>
             
-            {console.log(messages)}
+            
         <div className="MessagingPage">
             <div className="inbox">
                 <Inbox conversations={conversations} active={activeConversation} switchConvo={switchConvo}/>

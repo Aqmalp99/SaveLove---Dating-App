@@ -1,7 +1,19 @@
 const express = require('express');
 const router = express.Router();
+const rateLimiter = require("express-rate-limit");
 
-router.post('/confirm-date', async (req, res) => {
+//TO limit the number of request made to login an account
+const dateLimiter = rateLimiter({
+    //10 mins
+    windowMs: 10 * 60 * 1000,
+    
+    //5 requests per wndowMS
+    max: 50,
+  
+    message: "try again later"
+  })
+
+router.post('/confirm-date',dateLimiter, async (req, res) => {
     console.log(req.body.time);
     const query = `INSERT INTO date_confirmed (match_id,date,time) VALUES ($1,$2,$3);`;
     await req.pool.connect((err, client, release) => {
@@ -20,7 +32,7 @@ router.post('/confirm-date', async (req, res) => {
     })
 });
 
-router.post('/tested-positive', async (req, res) => {
+router.post('/tested-positive', dateLimiter, async (req, res) => {
 
     await req.pool.connect((err, client, release) => {
         if (err) {

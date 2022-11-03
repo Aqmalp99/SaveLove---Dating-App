@@ -4,9 +4,21 @@ const pool = require("../dbShae/dbShae");
 // const authorise = require("../middleware/authorise");
 
 module.exports = router;
+const rateLimiter = require("express-rate-limit");
+
+//TO limit the number of request made to login an account
+const matchesLimiter = rateLimiter({
+    //10 mins
+    windowMs: 10 * 60 * 1000,
+    
+    //5 requests per wndowMS
+    max: 150,
+  
+    message: "try again later"
+  })
 
 // get individual user
-router.get("/user", async (req, res) => {
+router.get("/user", matchesLimiter, async (req, res) => {
 
     const user_id = req.query.userId
   
@@ -25,7 +37,7 @@ router.get("/user", async (req, res) => {
 
 
 // get all users with interested gender, interested vaccination status and postcode
-router.get("/targetusers", async (req, res) => {
+router.get("/targetusers",matchesLimiter, async (req, res) => {
 
     const int_gender = req.query.int_gender
     const int_vaxx_status = req.query.int_vaxx_status
@@ -64,7 +76,7 @@ router.get("/targetusers", async (req, res) => {
 });
 
 // check match
-router.get("/checkmatch", async (req, res) => {
+router.get("/checkmatch", matchesLimiter, async (req, res) => {
 
     const user_id  = req.query.user_id
     const liked_user_id = req.query.liked_user_id
@@ -83,7 +95,7 @@ router.get("/checkmatch", async (req, res) => {
 });
 
 // add match
-router.post("/addmatch", async (req, res) => {
+router.post("/addmatch",matchesLimiter, async (req, res) => {
 
     const {user_id, liked_user_id} = req.body
   
@@ -102,7 +114,7 @@ router.post("/addmatch", async (req, res) => {
 
 
 // add like
-router.put("/addlike", async (req, res) => {
+router.put("/addlike",matchesLimiter, async (req, res) => {
 
     const {user_id, liked_user_id} = req.body
 
@@ -121,7 +133,7 @@ router.put("/addlike", async (req, res) => {
 });
 
 // remove like
-router.put("/removelike", async (req, res) => {
+router.put("/removelike",matchesLimiter, async (req, res) => {
 
     const {user_id, removed_user_id} = req.body
 
