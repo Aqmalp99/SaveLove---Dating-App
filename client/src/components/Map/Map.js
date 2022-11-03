@@ -121,7 +121,7 @@ function MapComponent({changeSearch}) {
    
   return (isGeolocationAvailable) ?  (
     <>
-    <LoadScript id="script-loader" googleMapsApiKey="AIzaSyAAnHKToKQ9imzJRKXzFVU8optXACQsr8M" libraries={["places"]}>
+    <LoadScript id="script-loader" googleMapsApiKey={process.env.REACT_APP_GOOGLE_KEY} libraries={["places"]}>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}

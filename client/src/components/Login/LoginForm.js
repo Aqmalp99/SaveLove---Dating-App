@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useContext, createContext } from "react";
 import './Login.css';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
@@ -18,7 +18,7 @@ function LoginForm() {
 
         try {
             const response = await axios.post(`/auth/login`, { email, password })
-
+            const userID= createContext(response.data.user_id);
             setCookie('UserId', response.data.user_id)
             setCookie('AuthToken', response.data.token)
 

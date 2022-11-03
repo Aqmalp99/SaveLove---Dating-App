@@ -1,6 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import ChatHistory from './ChatHistory';
-// import MessageInput from './MessageInput';
 import Inbox from './Inbox';
 import "./styles.css";
 import Button from 'react-bootstrap/Button';
@@ -13,8 +12,8 @@ import { CalendarHeart } from 'react-bootstrap-icons';
 import moment from 'moment';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
-import {useNavigate} from 'react-router-dom';
-import {useCookies} from 'react-cookie'
+import {useCookies} from 'react-cookie';
+import { decryptMessage, encryptMessage } from "./aes.js";
 //randomly generated id to mimic a client
 //this would usually be session storage
 
@@ -23,9 +22,8 @@ import {useCookies} from 'react-cookie'
 //query object can be accessed by socket server
 
 
-const MessagingPage = () => {
+const MessagingPage = (props) => {
 
-    const navigate= useNavigate();
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [conversations, setConversations] = useState([]);
@@ -33,29 +31,11 @@ const MessagingPage = () => {
     const [displayModal, setDisplayModal]= useState(false);
     const [datePicked,setDatePicked]= useState("");
     const [dateConfirmed, setDateConfirmed] = useState({success:false,error:false});
-    const [cookies, setCookie, removeCookie] = useCookies(['user'])
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const id=cookies.UserId;
     
-    const socket = io("/", {
-        query: {
-            id: id,
-        }
-    });
-    const sendMessage = () => {
-        let messageData = {
-            sender: id,
-            message: message,
-            convoID: conversations[activeConversation].match_id,
-        }
-
-        setMessages((messages) => ([...messages, messageData]));
-
-        socket.emit("send_message", {messageData});
-        setMessage("");
-    }
-
-    //fetch all the matches for the user that logged in
     useEffect(() => {
+        
         const fetchMatches = async () => {
             await axios.get(`/messaging/matches/${id}`)
             .then((data) => {
@@ -68,6 +48,19 @@ const MessagingPage = () => {
 
         fetchMatches();
     }, []);
+    const sendMessage = () => {
+        let messageData = {
+            sender: id,
+            message: encryptMessage(message),
+            convoID: conversations[activeConversation].match_id,
+        }
+        props.socket.emit("send_message", {messageData});
+        messageData.message= message;
+        setMessages((messages) => ([...messages, messageData]));
+        setMessage("");
+    }
+    //fetch all the matches for the user that logged in
+    
 
     //fetch all the messages for the currently active conversation
     useEffect(() => {
@@ -79,6 +72,9 @@ const MessagingPage = () => {
             const convoID = conversations[activeConversation].match_id;
             const messages = await axios.get(`/messaging/messages/${convoID}`)
                 .then((data) => {
+                    data.data.map((message) => {
+                        message.message = decryptMessage(message.message)
+                    })
                     setMessages(data.data);
                 })
                 .catch((err) => {
@@ -90,11 +86,12 @@ const MessagingPage = () => {
     }, [conversations, activeConversation]);
 
     useEffect(() => {
-        socket.on("receive_message", (data) => {
+        props.socket.on("receive_message", (data) => {
+            data.messageData.message= decryptMessage(data.messageData.message);
             setMessages((messages) => ([...messages, data.messageData]));
             console.log(data);
         })
-    }, [socket]);
+    }, [props.socket]);
 
     //switch conversations
     const switchConvo = (index) => {
@@ -159,7 +156,7 @@ const MessagingPage = () => {
                     <Modal.Title>Setup a Date!</Modal.Title>
                 </Modal.Header>
                 <ModalBody>
-                    <Form onSubmit={confirmDate}>
+                    <Form onSubmit={confirmDate} style={{display: 'block'}}>
                         <Form.Group> 
                             <Form.Label> Date & Time </Form.Label>
                             <Form.Control  type="datetime-local" onChange={onDateChange} min={(new Date().toISOString()).slice(0,-8)} ></Form.Control >
