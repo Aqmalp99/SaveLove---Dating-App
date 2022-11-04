@@ -29,7 +29,7 @@ app.use((req,res,next) => {
   next();
 });
 
-app.use(require('sanitize').middleware);
+// app.use(require('sanitize').middleware);
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../client/build")));
