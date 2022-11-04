@@ -14,7 +14,7 @@ const dateLimiter = rateLimiter({
   })
 
 router.post('/confirm-date',dateLimiter, async (req, res) => {
-    console.log(req.body.time);
+
     const query = `INSERT INTO date_confirmed (match_id,date,time) VALUES ($1,$2,$3);`;
     await req.pool.connect((err, client, release) => {
         if (err) {
@@ -25,9 +25,7 @@ router.post('/confirm-date',dateLimiter, async (req, res) => {
             if (err) {
                 return console.error('Error executing query', err.stack)
             }
-            // console.log(result.rows)
             res.sendStatus(200);
-            // console.log(data);
         })
     })
 });
@@ -45,7 +43,6 @@ router.post('/tested-positive', dateLimiter, async (req, res) => {
                 return console.error('Error executing query', err.stack)
             }
             
-            // console.log(data);
         })
     })
 

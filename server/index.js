@@ -47,7 +47,7 @@ app.get("/", (req, res) => {
 
 
 io.on("connection", async (socket) => {
-  console.log(`User connected: ${socket.id}`);
+ 
 
   const userID = socket.handshake.query.id;
   const query = `SELECT match_id FROM match WHERE person_1 = $1 
@@ -63,17 +63,17 @@ io.on("connection", async (socket) => {
     return String(element.match_id);
   })
 
-  console.log(matches);
+
 
   await socket.join(matches);
 
-  console.log(socket.rooms);
+
   socket.on('disconnect', function(){
     console.log('A client has disconnected from the server');
   });
 
   socket.on("send_message", async (data) => {
-    console.log(data);
+ 
     const insertQuery = `INSERT INTO message (match_id, sender, message, date_message) 
                          VALUES ($1, $2, $3, NOW())`;
     await dbPool.query(insertQuery, [data.messageData.convoID, data.messageData.sender, data.messageData.message]);
