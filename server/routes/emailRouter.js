@@ -42,7 +42,6 @@ emailRouter.post('/send',emailLimiter, async(req,res) => {
     try{
         var email = req.body.emails; //change this to be fetched from db by filter(emails of students who are enrolled to that class)
         var content = `You have been on a date with someone in the past 14 days who has tested positive for Covid. Please take extra precautions, and follow your local state guidlines.`;
-        console.log(email);
       
         var mail = {
           from: 'safelovesse@gmail.com',

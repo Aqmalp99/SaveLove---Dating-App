@@ -7,12 +7,14 @@ import Modal from 'react-bootstrap/Modal';
 import { ModalBody } from "react-bootstrap";
 import  { Navigate } from 'react-router-dom';
 import Navbar from '../Navbar';
-
+import {useCookies} from 'react-cookie';
 
 const TestedPositive = () => {
 
     const [date,setDate]= useState("");
     const [submitted, setSubmitted] = useState(false);
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
+    const id=cookies.UserId;
     const onDateChange = (e) => {
         setDate(e.target.value);
     }
@@ -21,7 +23,7 @@ const TestedPositive = () => {
         e.preventDefault();
         const emails=[];
         const submitCovidCase = async () => {
-            const body = {date: moment(date).format("YYYY-MM-DD"), emails :[]}
+            const body = {UserId: id, date: moment(date).format("YYYY-MM-DD"), emails :[]}
             await axios
             .post(`/covid/tested-positive`, body)
             .then( async (response) => {
@@ -45,7 +47,7 @@ const TestedPositive = () => {
         }
         
         submitCovidCase();
-
+        
 
 
     }
