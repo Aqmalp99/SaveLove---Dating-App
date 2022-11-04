@@ -39,7 +39,7 @@ router.post('/tested-positive', dateLimiter, async (req, res) => {
             return console.error('Error acquiring client', err.stack)
         }
        
-        client.query('INSERT INTO covid_case (customer,date_of_infection) VALUES (1,$1)', [req.body.date], (err, result) => {
+        client.query('INSERT INTO covid_case (customer,date_of_infection) VALUES ($1,$2)', [req.body.UserId,req.body.date], (err, result) => {
             release();
             if (err) {
                 return console.error('Error executing query', err.stack)
@@ -54,7 +54,7 @@ router.post('/tested-positive', dateLimiter, async (req, res) => {
     ON date_confirmed.match_id = match.match_id
     INNER JOIN customer
     ON match.person_2 = customer.user_id
-    WHERE match.person_1 = 1 
+    WHERE match.person_1 = $2
     AND date_confirmed.date >= date ($1) - integer '14' 
     AND date_confirmed.date <= date ($1) 
     UNION
@@ -63,19 +63,18 @@ router.post('/tested-positive', dateLimiter, async (req, res) => {
     ON date_confirmed.match_id = match.match_id
     INNER JOIN customer
     ON match.person_1 = customer.user_id
-    WHERE match.person_2 = 1 
+    WHERE match.person_2 = $2
     AND date_confirmed.date >= date ($1)  - integer '14' 
     AND date_confirmed.date <= date ($1) ;`;
     await req.pool.connect((err, client, release) => {
         if (err) {
             return console.error('Error acquiring client', err.stack)
         }
-        client.query(query, [req.body.date], (err, result) => {
+        client.query(query, [req.body.date, req.body.UserId], (err, result) => {
             release();
             if (err) {
                 return console.error('Error executing query', err.stack)
             }
-            console.log(result.rows);
             res.send(result.rows);
         })
     })
