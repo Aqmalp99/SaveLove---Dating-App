@@ -16,8 +16,7 @@ export const Button = ({
     buttonStyle,
     buttonSize,
     link,
-    isLogin,
-    setLogin
+    isLogin
 }) => {
 
   const [cookies, setCookie, removeCookie] = useCookies(['user'])
@@ -31,23 +30,13 @@ export const Button = ({
 
   const checkLink = LINKS.includes(link) ? link : LINKS[0];
 
-  const onClick_Logout = () => {
-    if (authToken) {
-        removeCookie('UserId', cookies.UserId)
-        removeCookie('AuthToken', cookies.AuthToken)
-        window.location.reload()
-        return
-    }
-
-    setLogin(false)
-}
 
   return (
       <Link to={`${checkLink}`} className='btn-mobile'>
         <button
           className={`btn ${checkButtonStyle} ${checkButtonSize}`}
-          onClick={isLogin? onClick_Logout : onClick}
           type={type}
+          disabled={isLogin}
         >
           {children}
         </button>

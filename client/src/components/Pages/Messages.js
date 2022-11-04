@@ -2,6 +2,7 @@ import React from 'react';
 import MessagingPage from '../Messaging/MessagingPage';
 import {useCookies} from 'react-cookie';
 import io from "socket.io-client";
+import Navbar from '../Navbar';
 
 const Messages = () => {
 
@@ -14,6 +15,9 @@ const Messages = () => {
     });
   return (
     <>
+        <Navbar 
+            isLogin={false}
+        />
         <MessagingPage socket={socket}/>
     </>
   )

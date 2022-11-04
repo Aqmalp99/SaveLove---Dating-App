@@ -5,10 +5,6 @@ import '../App.css';
 import './HeroSection.css';
 
 function HeroSection() {
-  const [isLogin, setLogin] = useState(true)
-  const [cookies, setCookie, removeCookie] = useCookies(['user'])
-  const authToken = cookies.AuthToken
-
   return (
     <div className='hero-container'>
       <video src={require('.//videos/background.mp4')}autoPlay loop muted />
@@ -21,13 +17,11 @@ function HeroSection() {
           buttonStyle='btn--outline'
           buttonSize='btn--large'
           link='/signup'
-          isLogin={isLogin}
-          setLogin={setLogin}
         >
           SIGN UP
         </Button>
-        
       </div>
+
     </div>
   );
 }

@@ -1,10 +1,8 @@
 import React from 'react';
-import Navbar from './components/Navbar';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MapLoader from './components/Map/MapLoader';
 import Home from './components/Pages/Home';
-import HeroSection from './components/HeroSection';
 import Messages from './components/Pages/Messages';
 import Footer from './components/Footer';
 import MapPage from './components/Pages/MapPage';
@@ -15,11 +13,9 @@ import Signup from './components/Pages/Signup';
 import Register from './components/Pages/Register';
 import Dashboard from './components/Pages/Dashboard'
 import {useCookies} from 'react-cookie'
-import {useState, useEffect} from 'react'
 
 
 function App() {
-  const [isLogin, setLogin] = useState(false)
   const [cookies, setCookie, removeCookie] = useCookies(['user'])
   const authToken = cookies.AuthToken
 
@@ -27,11 +23,6 @@ function App() {
     <>
       <Router>
 
-        <Navbar 
-          authToken={authToken}
-          isLogIn={isLogin}
-          setLogin={setLogin}
-        />
         <Routes>
           <Route path='/' element={<Home/>}></Route>
           <Route path='/login' element={<Login/>}></Route>

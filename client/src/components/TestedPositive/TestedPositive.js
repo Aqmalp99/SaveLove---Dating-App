@@ -6,6 +6,7 @@ import moment from 'moment';
 import Modal from 'react-bootstrap/Modal';
 import { ModalBody } from "react-bootstrap";
 import  { Navigate } from 'react-router-dom';
+import Navbar from '../Navbar';
 
 
 const TestedPositive = () => {
@@ -55,6 +56,9 @@ const TestedPositive = () => {
     }
   return (
     <div>
+        <Navbar 
+            isLogin={false}
+        />
         <Form onSubmit={onPositiveCase}>
             <Form.Group>
                 <Form.Label>

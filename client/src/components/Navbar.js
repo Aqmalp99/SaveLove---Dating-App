@@ -2,11 +2,17 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 import { Button } from './Button';
+import {useCookies} from "react-cookie"
+import { useNavigate } from 'react-router-dom'
 
 
-function Navbar({authToken, isLogIn, setLogin}){
+function Navbar({setLogIn, isLogin}){
     const [click, setClick] =useState(false);
-    const [button, setButton]=useState(true);  
+    const [button, setButton]=useState(true);
+    const [cookies, setCookie, removeCookie] = useCookies(['user'])
+    const authToken = cookies.AuthToken
+
+    let navigate = useNavigate()
 
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);  
@@ -20,18 +26,28 @@ function Navbar({authToken, isLogIn, setLogin}){
     };
     window.addEventListener('resize',showButton);
 
+    const handleClick_Logout = () => {
+        if (!isLogin && authToken) {
+            removeCookie('UserId', cookies.UserId)
+            removeCookie('AuthToken', cookies.AuthToken)
+            // window.location.reload()
+            navigate ('/')
+            // return
+        }
+    }
+
     return (
         <>
             <nav className='navbar'>
                 <div className='navbar-container'>
-                    <Link to='/' className='navbar-logo'>SAFELOVE
+                    <Link to={isLogin? '/': '/dashboard'} className='navbar-logo'>SAFELOVE
                     </Link>
                     <div className='menu-icon' onClick={handleClick}>
                         <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
                     </div>
                     <ul className={click ? 'nav-menu active' : 'nav-menu'}>
                         <li className='nav-item'>
-                            <Link to='/' className='nav-links' onClick={closeMobileMenu}>
+                            <Link to={isLogin? '/': '/dashboard'} className='nav-links' onClick={closeMobileMenu}>
                                 Home
                             </Link>
                         </li>
@@ -56,7 +72,9 @@ function Navbar({authToken, isLogIn, setLogin}){
                             </Link>
                         </li>
                     </ul>    
-                    {button && <Button buttonStyle='btn--outline' link={isLogIn? 'logout' : 'login'}>{isLogIn? 'LOG OUT' : 'LOG IN'}</Button>}               
+                    {button && isLogin && <Button buttonStyle='btn--outline' link='login'>{'LOG IN'}</Button>}
+                    {button && !isLogin && (<button className='btn--outline' onClick={handleClick_Logout}>Log Out</button>
+                    )}           
                 </div>
             </nav>
         </>

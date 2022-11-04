@@ -119,7 +119,7 @@ router.put("/addlike",matchesLimiter, async (req, res) => {
     const {user_id, liked_user_id} = req.body
 
     try {
-      const like = await pool.query("UPDATE customer SET likes = array_prepend(CAST($1 AS uuid), likes) WHERE user_id = $2 AND NOT CAST($1 AS uuid) = ANY(likes)", 
+      const like = await pool.query("UPDATE customer SET likes = array_prepend(CAST($1 AS uuid), likes) WHERE user_id = $2 RETURNING *", 
       [ liked_user_id, user_id ]
       
     );

@@ -3,6 +3,7 @@ import Table from 'react-bootstrap/Table';
 import axios from 'axios';
 import moment from 'moment';
 import {useCookies} from 'react-cookie';
+import Navbar from '../Navbar';
 
 const MyDates = () => {
 
@@ -27,6 +28,9 @@ const MyDates = () => {
 
   return (
     <div>
+        <Navbar 
+            isLogin={false}
+        />
         <Table striped bordered hover>
             <thead>
                 <tr>

@@ -14,14 +14,49 @@ const tempDB = [
         int_gender: "N/A",
         int_vaxx_status: "N/A",
         interests: "N/A",
-        likes: null,
         password: "N/A",
         postcode: 0,
         surname: "",
         url: "",
         user_id: "",
-        vaxx_status: ""
+        vaxx_status: "",
+        likes: []
     },
+    // {
+    //     email: "N/A",
+    //     first_name: "N/A",
+    //     gender: "N/A",
+    //     int_gender: "N/A",
+    //     int_vaxx_status: "N/A",
+    //     interests: "N/A",
+    //     password: "N/A",
+    //     postcode: 0,
+    //     surname: "",
+    //     url: "",
+    //     user_id: "",
+    //     vaxx_status: "",
+    //     likes: []
+    // },
+    // {
+    //     email: "N/A",
+    //     first_name: "N/A",
+    //     gender: "N/A",
+    //     int_gender: "N/A",
+    //     int_vaxx_status: "N/A",
+    //     interests: "N/A",
+    //     password: "N/A",
+    //     postcode: 0,
+    //     surname: "",
+    //     url: "",
+    //     user_id: "00000000-0000-0000-0000-000000000000",
+    //     vaxx_status: "",
+    //     likes: [
+    //         "00000000-0000-0000-0000-000000000000",
+    //     ]
+    // }
+]
+
+const tempUserDB = [
     {
         email: "N/A",
         first_name: "N/A",
@@ -29,28 +64,13 @@ const tempDB = [
         int_gender: "N/A",
         int_vaxx_status: "N/A",
         interests: "N/A",
-        likes: null,
         password: "N/A",
         postcode: 0,
         surname: "",
         url: "",
         user_id: "",
-        vaxx_status: ""
-    },
-    {
-        email: "N/A",
-        first_name: "N/A",
-        gender: "N/A",
-        int_gender: "N/A",
-        int_vaxx_status: "N/A",
-        interests: "N/A",
-        likes: null,
-        password: "N/A",
-        postcode: 0,
-        surname: "",
-        url: "",
-        user_id: "",
-        vaxx_status: ""
+        vaxx_status: "",
+        likes: []
     }
 ]
 
@@ -70,6 +90,7 @@ const MatchingDashboard = () => {
             setUser(response.data)
 
         } catch (error) {
+            setUser(tempUserDB)
             console.log(error)
         }
     }
@@ -88,6 +109,7 @@ const MatchingDashboard = () => {
             setTargetUsers(response.data)
             
         } catch (error) {
+            setTargetUsers(tempDB)
             console.log(error)
         }
     }
@@ -106,14 +128,16 @@ const MatchingDashboard = () => {
         return <MatchingDashboardInner targetUsers={tempDB} user={user} user_id={userId} getUser={getUser} />
     }
 
-    return <MatchingDashboardInner targetUsers={targetUsers} user={user} user_id={userId} getUser={getUser} />
+    const LikedUserIds = user.likes
+    const filteredTargetUsers = targetUsers?.filter(targetUser => !LikedUserIds?.includes(targetUser.user_id))
+
+    return <MatchingDashboardInner targetUsers={filteredTargetUsers} user={user} user_id={userId} getUser={getUser} />
 }
 
 const MatchingDashboardInner = ({ targetUsers, user, user_id, getUser }) => {
 
     const [currentIndex, setCurrentIndex] = useState(targetUsers.length - 1)
     const [lastDirection, setLastDirection] = useState()
-    const [lastProfileId, setLastProfileId] = useState()
 
     const addLike = async (liked_user_id, swipedLikes) => {
         try {
@@ -177,7 +201,6 @@ const MatchingDashboardInner = ({ targetUsers, user, user_id, getUser }) => {
                     }
                 })
 
-                // console.log(response.data)
                 const success = response.status === 200
 
                 if (success) {
@@ -212,15 +235,11 @@ const MatchingDashboardInner = ({ targetUsers, user, user_id, getUser }) => {
       setCurrentIndex(val)
       currentIndexRef.current = val
     }
-  
-    // const canGoBack = currentIndex < targetUsers.length - 1
-  
-    // const canSwipe = currentIndex >= 0
+
   
     const swiped = (direction, index, liked_user_id, swipedLikes) => {
         if (direction === 'right') {
             addLike(liked_user_id, swipedLikes)
-            // checkMatch(liked_user_id, swipedLikes)
         }
         setLastDirection(direction)
         updateCurrentIndex(index - 1)
@@ -231,21 +250,6 @@ const MatchingDashboardInner = ({ targetUsers, user, user_id, getUser }) => {
       currentIndexRef.current >= idx && childRefs[idx].current.restoreCard()
     }
   
-    // const swipe = async (direction) => {
-    //   if (canSwipe && currentIndex < targetUsers.length) {
-    //     await childRefs[currentIndex].current.swipe(direction)
-    //   }
-    // }
-  
-    // const goBack = async () => {
-    //     if (!canGoBack) return
-    //     const newIndex = currentIndex + 1
-    //     updateCurrentIndex(newIndex)
-    //     await childRefs[newIndex].current.restoreCard()
-    //     // if (lastDirection === 'right') {
-    //     //     removeLike(lastProfileId)
-    //     // }
-    // }
 
     const age = (birthday) => {   
         let today = new Date(),  
@@ -336,15 +340,6 @@ const MatchingDashboardInner = ({ targetUsers, user, user_id, getUser }) => {
                                                 </div>
                                             </div>
                                             <hr />
-                                            <div className="row">
-                                                <div className="col-sm-10">
-                                                    <h6 className="mb-0">User ID</h6>
-                                                </div>
-                                                <div className="col-sm-25 text-secondary">
-                                                    {character.user_id}
-                                                </div>
-                                            </div>
-                                            <hr />
                                         </div>
                                     </div>
                                 </div>
@@ -355,14 +350,6 @@ const MatchingDashboardInner = ({ targetUsers, user, user_id, getUser }) => {
                     ))}
 
                     </div>
-
-
-                    {/* <div className='buttons'>
-                        <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('left')}>No</button>
-                        <button style={{ backgroundColor: '#c3c4d3' }} onClick={() => goBack()}>Undo</button>
-                        <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('right')}>Yes</button>
-                    </div> */}
-
 
             </div>
         }

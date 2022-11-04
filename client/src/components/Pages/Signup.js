@@ -1,10 +1,13 @@
 import React from 'react';
 import SignupForm from '../Signup/SignupForm';
+import Navbar from '../Navbar';
 
 function Signup (){
-    return (
-        
+    return (  
         <>
+            <Navbar 
+                isLogin={true}
+            />
             <SignupForm />
         </>
     );
