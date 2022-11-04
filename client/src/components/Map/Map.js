@@ -34,16 +34,10 @@ function MapComponent({changeSearch}) {
     
     const onLoad = React.useCallback(function callback(map) {
         if(coords !== undefined){
-            // setCenter({
-            //   lat: 0,
-            //   lng: 0
-            // });
-            // if(center !== undefined){
+          
               const bounds = new window.google.maps.LatLngBounds(center);
               map.fitBounds(bounds);
               setMap(map)
-              console.log(markers)
-            // }
 
         }
     }, [map,coords])
@@ -81,7 +75,6 @@ function MapComponent({changeSearch}) {
       results.forEach((result)=> {
         tempArray.push(result.geometry.location);
       });
-      console.log(markers);
       if(markers.length >0){
 
         
@@ -128,8 +121,6 @@ function MapComponent({changeSearch}) {
         zoom={6}
         onLoad={onLoad}
       >
-        {/* {markers.map((mark,index) => <Marker key={index} position={mark} />)}
-        {console.log(markers)} */}
         <StandaloneSearchBox
           onLoad={handleLoad}
           onPlacesChanged={handlePlacesChanged}

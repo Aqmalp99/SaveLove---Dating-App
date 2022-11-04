@@ -89,13 +89,11 @@ const MessagingPage = (props) => {
         props.socket.on("receive_message", (data) => {
             data.messageData.message= decryptMessage(data.messageData.message);
             setMessages((messages) => ([...messages, data.messageData]));
-            console.log(data);
         })
     }, [props.socket]);
 
     //switch conversations
     const switchConvo = (index) => {
-        console.log(index);
         setActiveConversation(index);
     }
 
@@ -110,7 +108,6 @@ const MessagingPage = (props) => {
 
     const confirmDate = (e) => {
         e.preventDefault();
-        console.log(datePicked);
         const submitDate = async () => {
             const body = {matchID: conversations[activeConversation].match_id,
                           date: moment(datePicked).format("YYYY-MM-DD"),
