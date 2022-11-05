@@ -15,14 +15,10 @@ var markers= [];
 
 function MapComponent({changeSearch}) {
 
-  
   const [map, setMap] = React.useState(null);
   const [center,setCenter] = useState({lat:0, lng:1});
   const [restaurantDetails, setRestaurantDetails] = useState([]);
   const classRef = useRef(null);
-  
- 
-  
 
     const { coords, isGeolocationAvailable, isGeolocationEnabled } =
             useGeolocated({

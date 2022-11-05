@@ -44,9 +44,12 @@ function Navbar({setLogIn, isLogin}){
                 <div className='navbar-container'>
                     <Link to={isLogin? '/': '/dashboard'} className='navbar-logo'>SAFELOVE
                     </Link>
+                    {!isLogin && 
                     <div className='menu-icon' onClick={handleClick}>
                         <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
                     </div>
+                    }
+                    {!isLogin && 
                     <ul className={click ? 'nav-menu active' : 'nav-menu'}>
                         <li className='nav-item'>
                             <Link to={isLogin? '/': '/dashboard'} className='nav-links' onClick={closeMobileMenu}>
@@ -73,7 +76,8 @@ function Navbar({setLogIn, isLogin}){
                                 Tested Positive
                             </Link>
                         </li>
-                    </ul>    
+                    </ul>
+                    }    
                     {button && isLogin && <Button buttonStyle='btn--outline' link='login'>{'LOG IN'}</Button>}
                     {button && !isLogin && (<button className='btn--outline' onClick={handleClick_Logout}>Log Out</button>
                     )}           
