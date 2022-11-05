@@ -26,12 +26,14 @@ function Navbar({setLogIn, isLogin}){
     };
     window.addEventListener('resize',showButton);
 
+
     const handleClick_Logout = () => {
+        
         if (!isLogin && authToken) {
-            removeCookie('UserId', cookies.UserId)
-            removeCookie('AuthToken', cookies.AuthToken)
+            removeCookie('UserId', cookies.UserId);
+            removeCookie('AuthToken', cookies.AuthToken);
             // window.location.reload()
-            navigate ('/')
+            navigate ('/');
             // return
         }
     }

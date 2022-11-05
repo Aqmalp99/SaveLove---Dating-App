@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MapLoader from './components/Map/MapLoader';
@@ -18,11 +18,11 @@ import {useCookies} from 'react-cookie'
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies(['user'])
   const authToken = cookies.AuthToken
+  
 
   return (
     <>
       <Router>
-
         <Routes>
           <Route path='/' element={<Home/>}></Route>
           <Route path='/login' element={<Login/>}></Route>

@@ -8,6 +8,7 @@ const Messages = () => {
 
     const [cookies, setCookie, removeCookie] = useCookies(['user'])
     const id=cookies.UserId;
+    
     const socket = io("/", {
         query: {
             id: id,

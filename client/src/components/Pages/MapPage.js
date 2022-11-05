@@ -4,6 +4,7 @@ import MapLoader from '../Map/MapLoader';
 import Navbar from '../Navbar';
 
 function MapPage (){
+    
     return (
         <>
             <Navbar 

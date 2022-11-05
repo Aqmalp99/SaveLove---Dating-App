@@ -15,6 +15,7 @@ const TestedPositive = () => {
     const [submitted, setSubmitted] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const id=cookies.UserId;
+    
     const onDateChange = (e) => {
         setDate(e.target.value);
     }
