@@ -16,6 +16,7 @@ const dateLimiter = rateLimiter({
 router.post('/confirm-date',dateLimiter, async (req, res) => {
 
     const query = `INSERT INTO date_confirmed (match_id,date,time) VALUES ($1,$2,$3);`;
+    console.log(req.body);
     await req.pool.connect((err, client, release) => {
         if (err) {
             return console.error('Error acquiring client', err.stack)
