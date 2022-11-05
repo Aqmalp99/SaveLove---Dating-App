@@ -2,7 +2,7 @@
 import React, { useRef, useState } from 'react'
 import { GoogleMap, useJsApiLoader, Marker, LoadScript, places,StandaloneSearchBox } from '@react-google-maps/api';
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
-import { useGeolocated } from "react-geolocated";
+// import { useGeolocated } from "react-geolocated";
 import DisplayRestaurants from './DisplayRestaurants';
 
 
@@ -20,28 +20,25 @@ function MapComponent({changeSearch}) {
   const [restaurantDetails, setRestaurantDetails] = useState([]);
   const classRef = useRef(null);
 
-    const { coords, isGeolocationAvailable, isGeolocationEnabled } =
-            useGeolocated({
-                positionOptions: {
-                    enableHighAccuracy: false,
-                },
-                userDecisionTimeout: 5000,
-            });
+    // const { coords, isGeolocationAvailable, isGeolocationEnabled } =
+    //         useGeolocated({
+    //             positionOptions: {
+    //                 enableHighAccuracy: false,
+    //             },
+    //             userDecisionTimeout: 5000,
+    //         });
     
     const onLoad = React.useCallback(function callback(map) {
-        if(coords !== undefined){
-          
+      
               const bounds = new window.google.maps.LatLngBounds(center);
               map.fitBounds(bounds);
               setMap(map)
 
-        }
-    }, [map,coords])
+        
+    }, [map])
     const [places,setPlaces]=useState("");
     
-    if(coords === undefined){
-        return;
-    }
+  
     
 
     const handleLoad = ref =>{
@@ -108,7 +105,7 @@ function MapComponent({changeSearch}) {
   
     
    
-  return (isGeolocationAvailable) ?  (
+  return  (
     <>
     <LoadScript id="script-loader" googleMapsApiKey={process.env.REACT_APP_GOOGLE_KEY} libraries={["places"]}>
       <GoogleMap
@@ -147,7 +144,7 @@ function MapComponent({changeSearch}) {
         <></>
       </GoogleMap>
       </LoadScript>
-      </>) : <></>
+      </>)
   
 }
 
