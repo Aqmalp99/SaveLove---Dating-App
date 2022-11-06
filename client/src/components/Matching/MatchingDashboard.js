@@ -21,39 +21,7 @@ const tempDB = [
         user_id: "",
         vaxx_status: "",
         likes: []
-    },
-    // {
-    //     email: "N/A",
-    //     first_name: "N/A",
-    //     gender: "N/A",
-    //     int_gender: "N/A",
-    //     int_vaxx_status: "N/A",
-    //     interests: "N/A",
-    //     password: "N/A",
-    //     postcode: 0,
-    //     surname: "",
-    //     url: "",
-    //     user_id: "",
-    //     vaxx_status: "",
-    //     likes: []
-    // },
-    // {
-    //     email: "N/A",
-    //     first_name: "N/A",
-    //     gender: "N/A",
-    //     int_gender: "N/A",
-    //     int_vaxx_status: "N/A",
-    //     interests: "N/A",
-    //     password: "N/A",
-    //     postcode: 0,
-    //     surname: "",
-    //     url: "",
-    //     user_id: "00000000-0000-0000-0000-000000000000",
-    //     vaxx_status: "",
-    //     likes: [
-    //         "00000000-0000-0000-0000-000000000000",
-    //     ]
-    // }
+    }
 ]
 
 const tempUserDB = [

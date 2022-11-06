@@ -108,15 +108,6 @@ router.post("/login", loginLimiter, async (req, res) => {
         res.status(500).send("Server error");
     }
 });
-  
-// router.get("/verify", authorise, async (req, res) => {
-//     try {
-//       res.json(true);
-//     } catch (err) {
-//       console.error(err.message);
-//       res.status(500).send("Server error");
-//     }
-// });
 
   
 module.exports = router;
