@@ -4,8 +4,7 @@ const pool = require("../dbShae/dbShae");
 const bcrypt = require("bcrypt");
 const jwtGenerator = require("../utils/jwtGenerator");
 const rateLimiter = require("express-rate-limit");
-// const validate = require("../bin/middleware/validate");
-// const authorise = require("../middleware/authorise");
+
 
 module.exports = router;
 //TO limit the number of request made to login an account
@@ -101,7 +100,6 @@ router.post("/login", loginLimiter, async (req, res) => {
       const user_id = user.rows[0].user_id;
       const token = jwtGenerator(user_id);
       return res.json({ user_id, token });
-      // return res.json("Log in is good");
 
     } catch (err) {
         console.error(err.message);

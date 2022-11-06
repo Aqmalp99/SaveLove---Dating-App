@@ -25,7 +25,6 @@ const ChatHistory = ({messages, messageReceived, id}) => {
                 <div key={index} className="message-recv">
                     {el.message}
                 </div>
-                {/* <div key={index} className="break"></div> */}
             </>
             )
         }
